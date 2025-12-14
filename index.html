@@ -1,0 +1,959 @@
+Conversation opened. 1 unread message.
+
+Skip to content
+Using SHRIMATI INDIRA GANDHI COLLEGE Mail with screen readers
+Enable desktop notifications for SHRIMATI INDIRA GANDHI COLLEGE Mail.
+   OK  No thanks
+
+1 of 654
+Program
+External
+Inbox
+
+Hasika sri
+7:37 PM (0 minutes ago)
+to me
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Gadget Booking — 7 Step Flow (with Panda Auth)</title>
+<style>
+  :root{
+    --bg-dark:#0b0b0f;
+    --panel:#1b1c20;
+    --accent:#ff6f3c;
+    --accent-2:#ff471a;
+    --muted:#9aa0a6;
+    --card:#0f1724;
+    --glass: rgba(255,255,255,0.03);
+    --success:#16a34a;
+    --danger:#ef4444;
+    font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;background:linear-gradient(180deg,#040506 0%, #07102a 60%);color:#e6eef6}
+  .wrap{
+    min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px;
+  }
+
+  /* big container that slides between auth and app */
+  .main {
+    width:100%;
+    max-width:1100px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:16px;
+    box-shadow: 0 30px 80px rgba(2,6,23,0.6);
+    overflow:hidden;
+    display:grid;
+    grid-template-columns: 420px 1fr;
+    min-height:600px;
+  }
+
+  /* Left animated auth panel */
+  .auth-panel{
+    padding:30px;
+    background: linear-gradient(180deg, rgba(255,111,60,0.06), rgba(255,71,26,0.02));
+    border-right:1px solid rgba(255,255,255,0.03);
+    position:relative;
+  }
+  .brand{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  .logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:26px;color:white;box-shadow:0 8px 30px rgba(255,111,60,0.12)}
+  .brand h1{margin:0;font-size:18px}
+  .brand p{margin:0;font-size:12px;color:var(--muted)}
+
+  .auth-switch{margin-top:6px;font-size:13px;color:var(--muted);display:flex;gap:10px;align-items:center}
+  .switch-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:6px 10px;border-radius:8px;color:var(--accent);cursor:pointer}
+  .switch-btn.secondary{background:transparent;color:var(--muted);border-style:dashed}
+
+  /* sliding container for forms */
+  .forms {
+    position:relative;
+    height:100%;
+    margin-top:18px;
+    overflow:hidden;
+  }
+  .form-inner {
+    position:absolute;
+    top:0;left:0;width:200%;height:100%;
+    display:flex;
+    transition: transform .8s cubic-bezier(.2,.9,.2,1);
+  }
+
+  /* two panels in the sliding container: login and signup */
+  .panel{
+    width:50%;
+    padding:18px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  label{font-size:13px;color:var(--muted)}
+  input[type="text"],input[type="email"],input[type="password"],select,input[type="date"],input[type="time"]{
+    width:100%;
+    padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);
+    background:rgba(255,255,255,0.02);color:inherit;font-size:14px;
+  }
+  .btn {
+    padding:10px 12px;border-radius:10px;border:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    color:white;font-weight:600;cursor:pointer;margin-top:8px;
+  }
+  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+
+  .note{font-size:13px;color:var(--muted)}
+
+  /* Right side - app content (7 pages) */
+  .app {
+    padding:26px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    display: flex;
+    flex-direction: column;
+  }
+  .app.hidden{display:none}
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+  .user-pill{display:flex;gap:12px;align-items:center}
+  .avatar{width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,#ffd9c7,#ffd1b0);display:flex;align-items:center;justify-content:center;font-weight:700;color:#5a1f08}
+  .logout{background:transparent;border:1px solid rgba(255,255,255,0.05);padding:8px 10px;border-radius:10px;color:var(--muted);cursor:pointer}
+
+  /* Multi-Step Tabs/Navigation */
+  .tab-bar {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      margin-bottom: 20px;
+  }
+  .tab-item {
+      padding: 10px 15px;
+      cursor: pointer;
+      color: var(--muted);
+      font-weight: 500;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s;
+  }
+  .tab-item.active {
+      color: var(--accent);
+      border-bottom: 3px solid var(--accent);
+  }
+
+  /* Step Content Area */
+  .step-content {
+      flex-grow: 1;
+      position: relative;
+      overflow: hidden;
+      min-height: 450px;
+  }
+  .step-page {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+      transition: opacity 0.4s;
+      opacity: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.02);
+      display: none; /* Hidden by default */
+  }
+  .step-page.active {
+      opacity: 1;
+      pointer-events: auto;
+      display: block;
+  }
+  
+  .card{background: transparent; padding: 0; border: none; }
+  .card h3{margin-top:0}
+  .small{font-size:13px;color:var(--muted)}
+  .form-group { margin-bottom: 15px; }
+
+  /* bookings list */
+  .booking-card{background:rgba(255,255,255,0.02);padding:10px;border-radius:10px;margin-bottom:10px;border:1px solid rgba(255,255,255,0.02); display:flex; gap: 10px; align-items:center}
+  .booking-card .meta{font-size:13px;color:var(--muted)}
+  .booking-image-placeholder {
+    width: 50px; height: 50px; background: rgba(255,255,255,0.04); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--muted);
+    overflow: hidden; 
+  }
+  .booking-details-wrap { flex: 1; }
+
+  /* Review Page Styles */
+  .review-detail {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba(255,255,255,0.05);
+  }
+  .review-detail strong { color: white; }
+
+  /* Profile styles */
+  .profile-section h4 { margin-bottom: 10px; color: var(--accent); }
+  .xp-bar{height:12px;background:rgba(255,255,255,0.04);border-radius:999px;overflow:hidden;margin-top:8px}
+  .xp-fill{height:100%;background:linear-gradient(90deg,#ffd08a,#ff6f3c);width:0%;transition:width .6s ease}
+
+  /* Panda styles (small embedded to keep panel compact) */
+  .panda-compact { text-align:center; margin-bottom:10px; }
+  .panda-mini { position: relative; width:140px; margin: 8px auto 6px; }
+  .panda-mini .earl, .panda-mini .earr { background:#444;height:28px;width:28px;border-radius:50%;position:absolute;top:-12px; }
+  .panda-mini .earl{ left:12px } .panda-mini .earr{ right:12px }
+  .panda-mini .face{ background:white;height:100px;width:130px;border-radius:50%;margin:auto;position:relative;padding-top:14px }
+  .panda-mini .eyel, .panda-mini .eyer{ height:30px;width:30px;background:#000;border-radius:50%;position:absolute;top:35px }
+  .panda-mini .eyel{ left:26px } .panda-mini .eyer{ right:26px }
+  .panda-mini .eyeball1, .panda-mini .eyeball2{ background:white;height:16px;width:16px;border-radius:50%;margin:7px;transition:0.25s }
+  .panda-mini .nose{ height:14px;width:14px;background:#333;border-radius:50%;position:absolute;top:63px;left:50%;transform:translateX(-50%) }
+  .panda-mini .mouth{ height:16px;width:34px;border-bottom:3px solid #333;border-radius:0 0 34px 34px;position:absolute;top:78px;left:50%;transform:translateX(-50%) }
+  .panda-mini .handl, .panda-mini .handr{ height:28px;width:28px;background:#444;border-radius:50%;position:absolute;top:74px;transition:0.3s }
+  .panda-mini .handl{ left:-6px } .panda-mini .handr{ right:-6px }
+
+  /* responsive */
+  @media (max-width:980px){
+    .main{grid-template-columns:1fr;min-height:760px}
+    .forms{order:1}
+    .app{order:2}
+    .panel{padding:12px}
+    .auth-panel{padding:18px}
+    .main.app-visible .auth-panel { display: none; }
+    .main:not(.app-visible) .app { display: none !important; }
+  }
+
+  /* sliding active class */
+  .main.auth-hidden .form-inner{ transform: translateX(0%) }
+  .main.app-visible .form-inner{ transform: translateX(-50%) }
+
+  /* small helper */
+  .error{color:var(--danger);font-size:13px}
+  .success{color:var(--success);font-size:13px}
+  .muted{color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="main auth-visible" id="mainBox">
+      <div class="auth-panel">
+        <div class="brand">
+          <div class="logo">G</div>
+          <div>
+            <h1>Gadget Hub</h1>
+            <p class="muted">Borrow gadgets • Learn • Save records</p>
+          </div>
+        </div>
+
+        <div class="auth-switch">
+          <div class="note">Welcome — sign in or create an account</div>
+          <div style="margin-left:auto;display:flex;gap:8px;">
+            <button class="switch-btn" id="toLoginBtn">Sign In</button>
+            <button class="switch-btn secondary" id="toSignupBtn">Sign Up</button>
+          </div>
+        </div>
+
+        <div class="forms" aria-hidden="false">
+          <div class="form-inner" id="formInner">
+
+            <!-- ---------- LOGIN PANEL (PANDA) ---------- -->
+            <div class="panel" aria-label="login">
+              <div class="panda-compact" aria-hidden="true">
+                <div class="panda-mini">
+                  <div class="earl"></div>
+                  <div class="earr"></div>
+
+                  <div class="face">
+                    <div class="eyel"><div class="eyeball1"></div></div>
+                    <div class="eyer"><div class="eyeball2"></div></div>
+                    <div class="nose"></div>
+                    <div class="mouth"></div>
+                  </div>
+
+                  <div class="handl"></div>
+                  <div class="handr"></div>
+                </div>
+              </div>
+
+              <h2>Sign In</h2>
+              <label for="loginEmail">Email</label>
+              <input id="loginEmail" type="email" placeholder="you@example.com" />
+              <label for="loginPass">Password</label>
+              <input id="loginPass" type="password" placeholder="••••••••" />
+              <div id="loginMsg" class="muted"></div>
+              <button class="btn" id="loginBtn">Login</button>
+            </div>
+
+            <!-- ---------- SIGNUP PANEL (PANDA) ---------- -->
+            <div class="panel" aria-label="signup">
+              <div class="panda-compact" aria-hidden="true">
+                <div class="panda-mini">
+                  <div class="earl"></div>
+                  <div class="earr"></div>
+
+                  <div class="face">
+                    <div class="eyel"><div class="eyeball1"></div></div>
+                    <div class="eyer"><div class="eyeball2"></div></div>
+                    <div class="nose"></div>
+                    <div class="mouth"></div>
+                  </div>
+
+                  <div class="handl"></div>
+                  <div class="handr"></div>
+                </div>
+              </div>
+
+              <h2>Create Account</h2>
+              <label for="signupName">Full name</label>
+              <input id="signupName" type="text" placeholder="Your name" />
+              <label for="signupEmail">Email</label>
+              <input id="signupEmail" type="email" placeholder="you@example.com" />
+              <label for="signupPass">Password</label>
+              <input id="signupPass" type="password" placeholder="Choose a password" />
+              <div id="signupMsg" class="muted"></div>
+              <button class="btn" id="signupBtn">Sign up</button>
+            </div>
+
+          </div>
+        </div>
+
+        <div style="position:absolute;left:16px;right:16px;bottom:18px;font-size:13px;color:var(--muted)">
+          <div>Tip: Use any email and password — data is saved locally in this browser.</div>
+        </div>
+      </div>
+
+      <!-- ---------- APP (unchanged) ---------- -->
+      <div class="app hidden" id="appArea" aria-hidden="true">
+        <div class="topbar">
+          <div>
+            <h2 style="margin:0">Gadget Booking</h2>
+            <div class="small">Reserve gadgets in 3 simple steps</div>
+          </div>
+          <div class="user-pill">
+            <div style="text-align:right">
+              <div id="userName" style="font-weight:700"></div>
+              <div class="muted" id="userEmail"></div>
+            </div>
+            <div class="avatar" id="userAvatar">U</div>
+            <button class="logout" id="logoutBtn">Logout</button>
+          </div>
+        </div>
+        
+        <div class="tab-bar" id="tabBar">
+            <div class="tab-item active" data-step="1">1. Choose Gadget</div>
+            <div class="tab-item" data-step="2">2. Set Location</div>
+            <div class="tab-item" data-step="3">3. Review & Confirm</div>
+            <div class="tab-item" data-step="4">Confirmation</div>
+            <div class="tab-item" data-step="5">My Bookings</div>
+            <div class="tab-item" data-step="6">Profile</div>
+            <div class="tab-item" data-step="7">Admin View</div>
+        </div>
+
+        <div class="step-content">
+          <div class="step-page active" data-step="1">
+              <h3>Step 1: Select Gadget Category and Item</h3>
+              <div class="small">Select the device you need for your project or class.</div>
+              <div class="card" style="margin-top:15px">
+                  <div class="form-group">
+                      <label for="gadgetSelect">Gadget</label>
+                      <select id="gadgetSelect">
+                          </select>
+                  </div>
+                  <div class="form-group">
+                      <label>Name (for booking)</label>
+                      <input id="bookName" type="text" placeholder="Your name (auto-filled)" readonly />
+                  </div>
+                  <div id="step1Msg" class="muted error"></div>
+                  <button class="btn" onclick="goToStep(2)">Next: Date & Location</button>
+              </div>
+          </div>
+
+          <div class="step-page" data-step="2">
+              <h3>Step 2: When and Where?</h3>
+              <div class="small">Enter the required pickup time and destination/address.</div>
+              <div class="card" style="margin-top:15px">
+                  <div style="display:flex;gap:8px">
+                    <div style="flex:1" class="form-group">
+                      <label>Date</label>
+                      <input id="bookDate" type="date" />
+                    </div>
+                    <div style="width:140px" class="form-group">
+                      <label>Time</label>
+                      <input id="bookTime" type="time" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                      <label>Address / Location</label>
+                      <input id="bookAddress" type="text" placeholder="e.g., Room 301, Main Block" />
+                  </div>
+                  <div id="step2Msg" class="muted error"></div>
+                  <div style="display:flex;gap:10px">
+                    <button class="btn ghost" onclick="goToStep(1)">Back</button>
+                    <button class="btn" onclick="goToStep(3)">Next: Review Order</button>
+                  </div>
+              </div>
+          </div>
+
+          <div class="step-page" data-step="3">
+              <h3>Step 3: Review Order Details</h3>
+              <div class="small">Please verify the information before confirming the booking.</div>
+              <div class="card" style="margin-top:15px; padding: 15px;">
+                  <div class="review-detail"><span>Gadget:</span> <strong id="reviewGadget"></strong></div>
+                  <div class="review-detail"><span>Requested By:</span> <strong id="reviewName"></strong></div>
+                  <div class="review-detail"><span>Date & Time:</span> <strong id="reviewDateTime"></strong></div>
+                  <div class="review-detail"><span>Location:</span> <strong id="reviewAddress"></strong></div>
+                  
+                  <div id="bookingMsg" class="muted success" style="margin-top:15px"></div>
+                  <div style="display:flex;gap:10px;margin-top:15px;">
+                    <button class="btn ghost" onclick="goToStep(2)">Back</button>
+                    <button class="btn" id="confirmBooking">Confirm Booking (Final Step)</button>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="step-page" data-step="4">
+              <h3>✅ Booking Confirmed!</h3>
+              <div class="small">Your reservation is successful and details are below.</div>
+              <div class="card" style="margin-top:15px; padding: 15px;">
+                  <div class="review-detail"><span>Order ID:</span> <strong id="confOrderID"></strong></div>
+                  <div class="review-detail"><span>Item Booked:</span> <strong id="confGadget"></strong></div>
+                  <div class="review-detail"><span>Pickup:</span> <strong id="confDateTime"></strong></div>
+                  <div class="review-detail"><span>Delivery Address:</span> <strong id="confAddress"></strong></div>
+                  <div style="margin-top: 20px;">
+                    <button class="btn" onclick="goToStep(5)">View My Bookings</button>
+                    <button class="btn ghost" onclick="goToStep(1)">Start New Booking</button>
+                  </div>
+              </div>
+          </div>
+
+          <div class="step-page" data-step="5">
+              <h3>My Bookings</h3>
+              <div class="small">Overview of your past and active reservations.</div>
+              <div id="userBookingsList" style="margin-top:15px"></div>
+          </div>
+
+          <div class="step-page" data-step="6">
+              <h3>Profile & Activity</h3>
+              <div class="small">Your usage stats and rewards.</div>
+              <div class="card profile-section" style="margin-top:15px; padding: 15px;">
+                <h4>Activity Points</h4>
+                <div>XP: <span id="xpVal">0</span> / 100 to next badge</div>
+                <div class="xp-bar"><div class="xp-fill" id="xpFill"></div></div>
+                <div style="margin-top:15px">
+                  <h4>Badges</h4>
+                  <div id="badgesArea" class="small muted">No badges yet</div>
+                </div>
+              </div>
+              <div style="margin-top:20px;">
+                <button class="btn danger" id="logoutBtnStep">Logout Now (Step 7)</button>
+              </div>
+          </div>
+
+          <div class="step-page" data-step="7">
+            <h3>Admin View: All Bookings</h3>
+            <div class="small">This shows all reservations made by all users (for demonstration).</div>
+            <div id="allBookings" style="margin-top:15px"></div>
+          </div>
+          
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+<script>
+/* ---------- Gadget Data (Step 2 Categories) ---------- */
+const GADGETS_BY_CATEGORY = {
+  'Computers & Monitors': [
+    "Laptop", "Desktop PC", "Monitor (24\")", "Chromebook", "iPad", "Tablet",
+    "MacBook Pro 16", "External SSD 1TB"
+  ],
+  'Audio & Visual Gear': [
+    "DSLR Camera", "Mirrorless Camera", "GoPro", "Handycam", "Webcam", "Projector",
+    "Microphone", "Headphones", "Bluetooth Speaker", "Studio Microphone", "Audio Recorder",
+    "Ring Light Kit", "Green Screen Backdrop"
+  ],
+  'Mobile & Wearables': [
+    "Smartphone", "Smartwatch", "Fitness Band", "AR Glasses", "VR Headset",
+    "Galaxy Tab S8", "iPhone 15 Pro"
+  ],
+  'Accessories & Tools': [
+    "Tripod", "Graphic Tablet (Wacom)", "Gaming Controller", "Racing Wheel",
+    "Digital Multimeter", "Soldering Kit", "3D Printer", "Raspberry Pi Kit", "Arduino Kit",
+    "Portable Charger 20k mAh", "Ethernet Cable Roll"
+  ],
+  'Peripherals': [
+    "Wireless Keyboard", "Wireless Mouse", "USB Hub C", "HDMI Splitter"
+  ]
+};
+
+/* ---------- Data & Initial Setup ---------- */
+const STORAGE_USERS = 'gadgets_users_v1';
+const STORAGE_BOOKINGS = 'gadgets_bookings_v1';
+const STORAGE_SESSION = 'gadgets_session_v1';
+
+let users = JSON.parse(localStorage.getItem(STORAGE_USERS) || '[]');
+let bookings = JSON.parse(localStorage.getItem(STORAGE_BOOKINGS) || '[]');
+let session = JSON.parse(localStorage.getItem(STORAGE_SESSION) || 'null'); // {email, name}
+
+// Temporary storage for current booking being created
+let currentBookingDraft = {};
+
+/* ---------- DOM Elements ---------- */
+const mainBox = document.getElementById('mainBox');
+const formInner = document.getElementById('formInner');
+const toLoginBtn = document.getElementById('toLoginBtn');
+const toSignupBtn = document.getElementById('toSignupBtn');
+const appArea = document.getElementById('appArea');
+
+// Booking Step Elements
+const gadgetSelect = document.getElementById('gadgetSelect');
+const bookName = document.getElementById('bookName');
+const bookDate = document.getElementById('bookDate');
+const bookTime = document.getElementById('bookTime');
+const bookAddress = document.getElementById('bookAddress'); 
+const confirmBooking = document.getElementById('confirmBooking');
+const bookingMsg = document.getElementById('bookingMsg');
+
+// Review Step Elements
+const reviewGadget = document.getElementById('reviewGadget');
+const reviewName = document.getElementById('reviewName');
+const reviewDateTime = document.getElementById('reviewDateTime');
+const reviewAddress = document.getElementById('reviewAddress');
+
+// Confirmation Step Elements
+const confOrderID = document.getElementById('confOrderID');
+const confGadget = document.getElementById('confGadget');
+const confDateTime = document.getElementById('confDateTime');
+const confAddress = document.getElementById('confAddress');
+
+// Display Elements
+const userBookingsList = document.getElementById('userBookingsList');
+const allBookingsEl = document.getElementById('allBookings');
+const xpVal = document.getElementById('xpVal');
+const xpFill = document.getElementById('xpFill');
+const badgesArea = document.getElementById('badgesArea');
+const logoutBtnStep = document.getElementById('logoutBtnStep');
+
+/* * Helper: Generates a visual aid placeholder (emoji) for the gadget.
+ */
+function getGadgetImageTag(gadget_name) {
+  let icon = '⚡'; 
+  if (gadget_name.toLowerCase().includes('laptop') || gadget_name.toLowerCase().includes('pc') || gadget_name.toLowerCase().includes('monitor')) icon = '💻';
+  else if (gadget_name.toLowerCase().includes('camera') || gadget_name.toLowerCase().includes('gopro')) icon = '📸';
+  else if (gadget_name.toLowerCase().includes('phone') || gadget_name.toLowerCase().includes('tablet') || gadget_name.toLowerCase().includes('ipad')) icon = '📱';
+  else if (gadget_name.toLowerCase().includes('mic') || gadget_name.toLowerCase().includes('recorder')) icon = '🎤';
+  else if (gadget_name.toLowerCase().includes('speaker') || gadget_name.toLowerCase().includes('projector')) icon = '🔊';
+  else if (gadget_name.toLowerCase().includes('watch') || gadget_name.toLowerCase().includes('band')) icon = '⌚';
+  else if (gadget_name.toLowerCase().includes('drone')) icon = '🚁';
+  else if (gadget_name.toLowerCase().includes('3d printer')) icon = '🖨️';
+  else if (gadget_name.toLowerCase().includes('kit') || gadget_name.toLowerCase().includes('pi') || gadget_name.toLowerCase().includes('multimeter')) icon = '💡';
+  else if (gadget_name.toLowerCase().includes('headphone') || gadget_name.toLowerCase().includes('earbud')) icon = '🎧';
+
+  return `<div class="booking-image-placeholder">${icon}</div>`;
+}
+
+/* ---------- App Flow Management (The 7 Pages) ---------- */
+const totalSteps = 7;
+let activeStep = 1;
+
+function updateTabs() {
+    document.querySelectorAll('.tab-item').forEach(tab => {
+        tab.classList.remove('active');
+        if (parseInt(tab.dataset.step) === activeStep) {
+            tab.classList.add('active');
+        }
+    });
+    document.querySelectorAll('.step-page').forEach(page => {
+        page.classList.remove('active');
+        page.style.display = 'none';
+        if (parseInt(page.dataset.step) === activeStep) {
+            page.classList.add('active');
+            page.style.display = 'block';
+        }
+    });
+
+    // Run necessary rendering functions when entering a specific step
+    if (activeStep === 3) prepareReview();
+    if (activeStep === 5) renderUserBookings();
+    if (activeStep === 6) updateProfile();
+    if (activeStep === 7) renderAllBookings();
+}
+
+function goToStep(step) {
+    // Validation logic before moving forward
+    if (step > activeStep) {
+        if (activeStep === 1) {
+            if (!gadgetSelect.value) { document.getElementById('step1Msg').textContent = 'Please select a gadget.'; return; }
+            currentBookingDraft.gadget = gadgetSelect.value;
+            currentBookingDraft.name = bookName.value;
+            document.getElementById('step1Msg').textContent = '';
+        } else if (activeStep === 2) {
+            if (!bookDate.value || !bookTime.value || !bookAddress.value.trim()) { 
+                document.getElementById('step2Msg').textContent = 'Please fill in date, time, and location.'; return; 
+            }
+            currentBookingDraft.date = bookDate.value;
+            currentBookingDraft.time = bookTime.value;
+            currentBookingDraft.address = bookAddress.value.trim();
+            document.getElementById('step2Msg').textContent = '';
+        }
+    }
+    
+    // Only allow navigating to steps 1-3 linearly for new booking
+    if (step > 4 && step < 7 && activeStep < 4) return; // Prevent jumping to bookings/profile mid-flow
+    
+    activeStep = step;
+    updateTabs();
+}
+
+// Attach listener to tabs (allows navigation between post-confirmation pages)
+document.querySelectorAll('.tab-item').forEach(tab => {
+    tab.addEventListener('click', (e) => {
+        const step = parseInt(e.target.dataset.step);
+        if (step > 4) goToStep(step); // Allow jumping to post-booking steps (My Bookings, Profile, Admin)
+        else goToStep(step); // Allow jumping between new booking steps
+    });
+});
+
+/* ---------- Core Functions ---------- */
+
+function prepareReview() {
+    // Step 3: Review Order (Request Step 6)
+    reviewGadget.textContent = currentBookingDraft.gadget || 'N/A';
+    reviewName.textContent = currentBookingDraft.name || 'N/A';
+    reviewDateTime.textContent = (currentBookingDraft.date && currentBookingDraft.time) ? `${currentBookingDraft.date} at ${currentBookingDraft.time}` : 'N/A';
+    reviewAddress.textContent = currentBookingDraft.address || 'N/A';
+    bookingMsg.textContent = 'Ready to confirm the reservation?';
+    bookingMsg.className = 'muted success';
+}
+
+// Final Confirmation Logic (Step 4)
+confirmBooking.addEventListener('click', () => {
+    bookingMsg.textContent = '';
+    const { gadget, date, time, address, name } = currentBookingDraft;
+
+    // Final Validation
+    if (!gadget || !date || !time || !address || !name) { 
+        bookingMsg.textContent = 'Missing required details. Please go back to Steps 1 and 2.';
+        bookingMsg.className = 'error';
+        return; 
+    }
+
+    // Availability Check (same gadget, same date, same time)
+    const conflict = bookings.find(b => b.gadget === gadget && b.date === date && b.time === time);
+    if (conflict) { 
+        bookingMsg.textContent = 'This gadget is already booked for the selected date & time!';
+        bookingMsg.className = 'error';
+        return; 
+    }
+
+    // Push Booking
+    const who = session ? session.email : 'guest';
+    const id = 'BK-' + Math.floor(Math.random() * 900000 + 100000);
+    const record = { id, owner: who, name, gadget, date, time, address, created: new Date().toISOString() };
+    bookings.push(record);
+    saveBookings();
+
+    // Reward XP
+    if (session) {
+        const u = users.find(x => x.email === session.email);
+        if (u) { u.xp = (u.xp || 0) + 10; saveUsers(); }
+    }
+
+    // Update Confirmation Page (Page 4)
+    confOrderID.textContent = id;
+    confGadget.textContent = gadget;
+    confDateTime.textContent = `${date} at ${time}`;
+    confAddress.textContent = address;
+    
+    // Clear draft and move to Confirmation Page
+    currentBookingDraft = {};
+    goToStep(4);
+});
+
+
+function renderUserBookings(){
+    // Step 5: My Bookings
+    userBookingsList.innerHTML = '';
+    if(session){
+        const userBook = bookings.filter(b=>b.owner===session.email);
+        if(userBook.length===0) userBookingsList.textContent = 'You have no active or past bookings.';
+        else{
+            userBook.slice().reverse().forEach(b=>{
+                const d = document.createElement('div'); 
+                d.className='booking-card';
+                const imageTag = getGadgetImageTag(b.gadget);
+                d.innerHTML = `${imageTag}
+                <div class="booking-details-wrap">
+                    <div>
+                        <strong>${b.gadget}</strong> 
+                        <div class="meta">${b.date} • ${b.time}</div>
+                        <div class="meta">Address: ${b.address}</div>
+                    </div>
+                    <div style="margin-top:8px;display:flex;gap:8px">
+                      <button class="btn" style="background:#ef6f3c;padding:6px 8px" onclick="editBooking('${b.id}')">Edit</button>
+                      <button class="btn" style="background:#7c2d12;padding:6px 8px" onclick="deleteBooking('${b.id}')">Cancel</button>
+                    </div>
+                </div>`;
+                userBookingsList.appendChild(d);
+            });
+        }
+    }
+}
+
+function renderAllBookings(){
+    // Step 7: Admin View (All Bookings)
+    allBookingsEl.innerHTML = '';
+    if(bookings.length===0) allBookingsEl.textContent = 'No bookings yet.';
+    bookings.slice().reverse().forEach(b=>{
+        const div = document.createElement('div');
+        div.className = 'booking-card';
+        const imageTag = getGadgetImageTag(b.gadget);
+        div.innerHTML = `${imageTag}
+        <div class="booking-details-wrap">
+            <div style="display:flex;justify-content:space-between;align-items:center; width: 100%">
+            <div>
+                <strong>${b.gadget}</strong>
+                <div class="meta">${b.date} • ${b.time}</div>
+                <div class="meta">${b.address}</div>
+            </div>
+            <div style="text-align:right"><div>${b.name}</div><div class="meta">${b.owner}</div></div>
+            </div>
+            <div style="margin-top:8px;display:flex;gap:8px">
+            <button class="btn" style="background:#7c2d12;padding:6px 8px" onclick="deleteBooking('${b.id}')">Delete</button>
+            </div>
+        </div>`;
+        allBookingsEl.appendChild(div);
+    });
+}
+
+
+/* ---------- Helpers and Utilities ---------- */
+
+function updateProfile(){
+    // Step 6: Profile
+    let xp = 0;
+    if(session){
+        const u = users.find(x=>x.email===session.email);
+        xp = u ? (u.xp || 0) : 0;
+    }
+    xpVal.textContent = xp;
+    xpFill.style.width = Math.min(100, xp) + '%';
+    // badges simple
+    const badges = [];
+    if(xp >= 30) badges.push('Bronze Booker');
+    if(xp >= 60) badges.push('Silver Specialist');
+    if(xp >= 100) badges.push('Gold Guru');
+    badgesArea.textContent = badges.length ? badges.join(', ') : 'No badges yet (Book more to earn XP!)';
+}
+
+
+function deleteBooking(id){
+  if(!confirm('Delete this booking? Note: This action is immediate.')) return;
+  const idx = bookings.findIndex(b=>b.id===id);
+  if(idx===-1) return alert('Booking not found');
+  bookings.splice(idx,1);
+  saveBookings();
+  renderUserBookings(); // Re-render My Bookings list
+  renderAllBookings(); // Re-render Admin list
+  updateProfile();
+}
+
+function editBooking(id){
+  const b = bookings.find(x=>x.id===id);
+  if(!b) return alert('Booking not found');
+  
+  if(session && b.owner!==session.email){ return alert('You can only edit your own bookings'); }
+  
+  // Set draft to current booking data
+  currentBookingDraft = { ...b }; 
+  
+  // Populate inputs with current booking data
+  gadgetSelect.value = b.gadget;
+  bookDate.value = b.date;
+  bookTime.value = b.time;
+  bookAddress.value = b.address; 
+  
+  // Delete the original booking ID and let the user resubmit via step 3
+  deleteBooking(id);
+  
+  alert('Booking details loaded into the "New Booking" form. Please review and press "Confirm Booking" to save changes.');
+  goToStep(1); // Jump back to step 1 to start the re-confirmation flow
+}
+
+function logout(){
+  session = null;
+  localStorage.removeItem(STORAGE_SESSION);
+  // hide app and return to auth
+  mainBox.classList.remove('app-visible');
+  appArea.classList.add('hidden');
+  // clear potential auth inputs
+  const le = document.getElementById('loginPass'); if(le) le.value='';
+  const le2 = document.getElementById('loginEmail'); if(le2) le2.value='';
+  showAuthPanel('login');
+}
+
+// Attach logout listeners
+document.getElementById('logoutBtn').addEventListener('click', logout);
+logoutBtnStep.addEventListener('click', logout); // Logout button on Page 6
+
+
+/* ---------- Auth and Init (preserve original behavior) ---------- */
+
+function saveUsers(){ localStorage.setItem(STORAGE_USERS, JSON.stringify(users)); }
+function saveBookings(){ localStorage.setItem(STORAGE_BOOKINGS, JSON.stringify(bookings)); }
+function saveSession(){ localStorage.setItem(STORAGE_SESSION, JSON.stringify(session)); }
+
+function showAuthPanel(which){ 
+  if(which==='login') formInner.style.transform = 'translateX(0%)';
+  else formInner.style.transform = 'translateX(-50%)';
+}
+
+document.getElementById('toLoginBtn').addEventListener('click', ()=>{ showAuthPanel('login'); });
+document.getElementById('toSignupBtn').addEventListener('click', ()=>{ showAuthPanel('signup'); });
+
+/* ---------- Signup/Login logic (unchanged) ---------- */
+
+document.getElementById('signupBtn').addEventListener('click', ()=>{
+  const name = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim().toLowerCase();
+  const pass = document.getElementById('signupPass').value;
+  const signupMsg = document.getElementById('signupMsg');
+
+  if(!name || !email || !pass){ signupMsg.textContent = 'Please fill all fields'; signupMsg.className='error'; return; }
+  if(users.find(u=>u.email===email)){ signupMsg.textContent = 'Email already registered'; signupMsg.className='error'; return; }
+
+  users.push({name, email, pass, xp:0});
+  saveUsers();
+  signupMsg.textContent = 'Account created! You may sign in.'; signupMsg.className='success';
+  setTimeout(()=>{ showAuthPanel('login'); document.getElementById('loginEmail').value=email; signupMsg.textContent=''; }, 900);
+});
+
+document.getElementById('loginBtn').addEventListener('click', ()=>{
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const pass = document.getElementById('loginPass').value;
+  const loginMsg = document.getElementById('loginMsg');
+  const user = users.find(u=>u.email===email && u.pass===pass);
+  if(!user){ loginMsg.textContent='Invalid email or password'; loginMsg.className='error'; return; }
+  
+  session = {email:user.email, name:user.name};
+  saveSession();
+  loginMsg.textContent=''; activateApp();
+});
+
+
+function activateApp(){
+  mainBox.classList.add('app-visible');
+  appArea.classList.remove('hidden');
+
+  // Fill gadget list with categories
+  gadgetSelect.innerHTML = '';
+  for (const category in GADGETS_BY_CATEGORY) {
+    const optgroup = document.createElement('optgroup');
+    optgroup.label = category;
+    GADGETS_BY_CATEGORY[category].forEach(g => {
+        const opt = document.createElement('option');
+        opt.value = g;
+        opt.textContent = g;
+        optgroup.appendChild(opt);
+    });
+    gadgetSelect.appendChild(optgroup);
+  }
+
+  // Show user info
+  if(session){
+    document.getElementById('userName').textContent = session.name;
+    document.getElementById('userEmail').textContent = session.email;
+    document.getElementById('userAvatar').textContent = session.name ? session.name[0].toUpperCase() : 'U';
+    bookName.value = session.name;
+  }
+  
+  // Start on the first booking page (Page 1)
+  goToStep(1); 
+  updateProfile(); // Load profile details
+}
+
+/* ---------- Panda interactions (scoped per panel) ---------- */
+
+/* Utility: find ancestor panel and its panda parts */
+function getPandaParts(el) {
+  const panel = el.closest('.panel');
+  if(!panel) return null;
+  const handl = panel.querySelector('.handl');
+  const handr = panel.querySelector('.handr');
+  const eyeball1 = panel.querySelector('.eyeball1');
+  const eyeball2 = panel.querySelector('.eyeball2');
+  return {panel, handl, handr, eyeball1, eyeball2};
+}
+
+/* When password input in any panel focuses, lift that panel's hands */
+function attachPandaToPassword(inputId) {
+  const input = document.getElementById(inputId);
+  if(!input) return;
+  const parts = getPandaParts(input);
+  if(!parts) return;
+  input.addEventListener('focus', () => {
+    if(parts.handl) parts.handl.style.transform = "translateY(-30px)";
+    if(parts.handr) parts.handr.style.transform = "translateY(-30px)";
+  });
+  input.addEventListener('blur', () => {
+    if(parts.handl) parts.handl.style.transform = "translateY(0px)";
+    if(parts.handr) parts.handr.style.transform = "translateY(0px)";
+  });
+}
+
+/* Attach to both login and signup password fields */
+attachPandaToPassword('loginPass');
+attachPandaToPassword('signupPass');
+
+/* Eye tracking: move eyes for the panda in the panel that currently is visible
+   On mousemove we move eyeballs in both panels a small amount so they follow cursor.
+*/
+document.addEventListener('mousemove', (e) => {
+  // calculate relative x offset [-8..8]
+  const x = (e.clientX / window.innerWidth) * 16 - 8;
+  // update eyeballs in each panel if present
+  document.querySelectorAll('.panel').forEach(panel => {
+    const eb1 = panel.querySelector('.eyeball1');
+    const eb2 = panel.querySelector('.eyeball2');
+    if(eb1) eb1.style.transform = `translateX(${x}px)`;
+    if(eb2) eb2.style.transform = `translateX(${x}px)`;
+  });
+});
+
+/* ---------- Init / boot ---------- */
+
+(function init(){
+  // Populate gadget choices
+  for (const category in GADGETS_BY_CATEGORY) {
+    const optgroup = document.createElement('optgroup');
+    optgroup.label = category;
+    GADGETS_BY_CATEGORY[category].forEach(g => {
+        const opt = document.createElement('option');
+        opt.value = g;
+        opt.textContent = g;
+        optgroup.appendChild(opt);
+    });
+    gadgetSelect.appendChild(optgroup);
+  }
+
+  // Check for existing session
+  if(session && session.email){
+    if(!users.find(u=>u.email===session.email)){
+      users.push({name: session.name, email: session.email, pass:'', xp:0}); saveUsers();
+    }
+    activateApp();
+  } else {
+    mainBox.classList.remove('app-visible');
+    appArea.classList.add('hidden');
+    showAuthPanel('login');
+  }
+
+  // Tab click handlers (for step nav)
+  document.querySelectorAll('.tab-item').forEach(tab => {
+    tab.addEventListener('click', (e) => {
+      const step = parseInt(e.target.dataset.step);
+      if (step > 4) goToStep(step);
+      else goToStep(step);
+    });
+  });
+})();
+</script>
+</body>
+</html>
